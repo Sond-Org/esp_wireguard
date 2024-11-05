@@ -56,8 +56,8 @@ static const char *base64_lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqr
 static const uint8_t zero_key[WIREGUARD_PUBLIC_KEY_LEN] = { 0 };
 
 // Calculated in wireguard_init
-static uint8_t construction_hash[WIREGUARD_HASH_LEN];
-static uint8_t identifier_hash[WIREGUARD_HASH_LEN];
+EXT_RAM_BSS_ATTR static uint8_t construction_hash[WIREGUARD_HASH_LEN];
+EXT_RAM_BSS_ATTR static uint8_t identifier_hash[WIREGUARD_HASH_LEN];
 
 void wireguard_init() {
 	wireguard_blake2s_ctx ctx;

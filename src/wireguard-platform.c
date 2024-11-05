@@ -18,8 +18,8 @@
 #define ENTROPY_CUSTOM_DATA_LENGTH (0)
 #define TAG "wireguard-platform"
 
-static struct mbedtls_ctr_drbg_context random_context;
-static struct mbedtls_entropy_context entropy_context;
+EXT_RAM_BSS_ATTR static struct mbedtls_ctr_drbg_context random_context;
+EXT_RAM_BSS_ATTR static struct mbedtls_entropy_context entropy_context;
 
 static int entropy_hw_random_source( void *data, unsigned char *output, size_t len, size_t *olen ) {
 	esp_fill_random(output, len);

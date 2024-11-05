@@ -52,11 +52,11 @@
 #define WG_ADDRSTRLEN  INET_ADDRSTRLEN
 #endif
 
-static struct netif wg_netif_struct = {0};
-static struct netif *wg_netif = NULL;
-static struct wireguardif_peer peer = {0};
-static uint8_t wireguard_peer_index = WIREGUARDIF_INVALID_INDEX;
-static uint8_t preshared_key_decoded[WG_KEY_LEN];
+EXT_RAM_BSS_ATTR static struct netif wg_netif_struct = {0};
+EXT_RAM_BSS_ATTR static struct netif *wg_netif = NULL;
+EXT_RAM_BSS_ATTR static struct wireguardif_peer peer = {0};
+EXT_RAM_BSS_ATTR static uint8_t wireguard_peer_index = WIREGUARDIF_INVALID_INDEX;
+EXT_RAM_BSS_ATTR static uint8_t preshared_key_decoded[WG_KEY_LEN];
 
 static esp_err_t esp_wireguard_peer_init(const wireguard_config_t *config, struct wireguardif_peer *peer)
 {
