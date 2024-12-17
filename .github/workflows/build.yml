@@ -314,7 +314,7 @@ jobs:
         # cache esp-idf tools. each tagged branch has fixed versions of tools.
         # the versions do not change. the master is an exception as it is a
         # moving target. do NOT cache tools if the branch is master.
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-tools
         with:
           path: ${{ steps.set_env.outputs.PROJECT_TOOLCHAIN_DIR }}
@@ -449,7 +449,7 @@ jobs:
       - name: Cache toolchain
         id: cache-idf-tools
         if: ${{ matrix.branch != 'master' }}
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.set_env.outputs.PROJECT_TOOLCHAIN_DIR }}
           key: ${{ runner.os }}-${{ matrix.branch }}-esp8266-cache-tools
@@ -580,7 +580,7 @@ jobs:
         # cache esp-idf tools. each tagged branch has fixed versions of tools.
         # the versions do not change. the master is an exception as it is a
         # moving target. do NOT cache tools if the branch is master.
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-tools
         if: ${{ matrix.branch != 'master' }}
         with:
@@ -696,7 +696,7 @@ jobs:
         # cache esp-idf tools. each tagged branch has fixed versions of tools.
         # the versions do not change. the master is an exception as it is a
         # moving target. do NOT cache tools if the branch is master.
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-tools
         if: ${{ matrix.branch != 'master' }}
         with:
