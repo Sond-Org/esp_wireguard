@@ -92,6 +92,7 @@ typedef struct {
  * @return
  *      - ESP_OK: Successfully initilized WireGuard interface.
  *      - ESP_ERR_INVALID_ARG: given argument is invalid.
+ *      - ESP_ERR_INVALID_STATE: ctx is still connected; disconnect first.
  *      - ESP_FAIL: Other error.
  */
 esp_err_t esp_wireguard_init(wireguard_config_t *config, wireguard_ctx_t *ctx);
@@ -104,11 +105,17 @@ esp_err_t esp_wireguard_init(wireguard_config_t *config, wireguard_ctx_t *ctx);
  * does not mean the connection is established. To see if the connection is
  * established, or the peer is up, use `esp_wireguardif_peer_is_up()`.
  *
- * Do not call this function multiple times.
+ * Callers serialize connect and disconnect. Resolves the peer in the calling
+ * task and runs the lwIP steps on the tcpip thread, so it must not be called
+ * from the tcpip thread. On failure nothing is left registered with lwIP,
+ * unless ctx->netif is set, in which case `esp_wireguard_disconnect()` removes
+ * it.
  *
  * @param       ctx Context of WireGuard.
  * @return
  *      - ESP_OK on success.
+ *      - ESP_ERR_INVALID_STATE when called on the tcpip thread, or when another
+ *        WireGuard interface is already registered.
  *      - ESP_FAIL on failure.
  */
 esp_err_t esp_wireguard_connect(wireguard_ctx_t *ctx);
@@ -123,15 +130,23 @@ esp_err_t esp_wireguard_set_default(wireguard_ctx_t *ctx);
 
 /**
  * @brief Test if the peer is up.
+ *
+ * @return
+ *      - ESP_OK when the peer has a valid session.
+ *      - ESP_FAIL otherwise, including when ctx is not connected.
  */
 esp_err_t esp_wireguardif_peer_is_up(wireguard_ctx_t *ctx);
 
 /**
  * @brief Disconnect from the peer
  *
+ * Removes the interface and the peer. Restores the default netif saved at
+ * connect only when the WireGuard interface was the default.
+ *
  * @param ctx Context of WireGuard.
  * @return
  *      - ESP_OK on success.
+ *      - ESP_ERR_INVALID_STATE when ctx is not connected.
  */
 esp_err_t esp_wireguard_disconnect(wireguard_ctx_t *ctx);
 
